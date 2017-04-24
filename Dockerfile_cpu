@@ -38,4 +38,5 @@ MAINTAINER 3hdeng
 
 #the extra ...
 RUN pip install jieba
+RUN pip install joblib
 CMD []
