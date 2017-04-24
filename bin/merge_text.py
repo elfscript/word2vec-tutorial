@@ -18,6 +18,10 @@ try:
 except ImportError:
     import json
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+# logger.info("PROGRESS: at batch #%i, processed %i words, keeping %i word type
+
 
 LABELS = {
     'ENT': 'ENT',
@@ -60,16 +64,23 @@ def iter_comments(loc):
 
 
 
-pre_format_re = re.compile(r'^[\`\*\~]')
-post_format_re = re.compile(r'[\`\*\~]$')
-url_re = re.compile(r'\[([^]]+)\]\(%%URL\)')
-link_re = re.compile(r'\[([^]]+)\]\(https?://[^\)]+\)')
+pre_format_re = re.compile(ur'^[\`\*\~]', re.UNICODE)
+post_format_re = re.compile(ur'[\`\*\~]$', re.UNICODE)
+url_re = re.compile(ur'\[([^]]+)\]\(%%URL\)', re.UNICODE)
+link_re = re.compile(ur'\[([^]]+)\]\(https?://[^\)]+\)', re.UNICODE)
 def strip_meta(text):
-    text = link_re.sub(r'\1', text)
-    text = text.replace('&gt;', '>').replace('&lt;', '<')
-    text = pre_format_re.sub('', text)
-    text = post_format_re.sub('', text)
-    return text
+  if isinstance(text, str):
+    text=text.decode('utf-8', 'ignore')
+
+  try:
+    text = link_re.sub(ur'\1', text)
+    text = text.replace(u'&gt;', u'>').replace(u'&lt;', u'<')
+    text = pre_format_re.sub(u'', text)
+    text = post_format_re.sub(u'', text)
+  except :
+    logger.info("sth wrong in processing %s", text)
+    #text=u''+ text  
+  return text
 
 
 def load_and_transform(batch_id, in_loc, out_dir):
