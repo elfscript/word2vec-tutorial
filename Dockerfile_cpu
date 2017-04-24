@@ -1,0 +1,41 @@
+#to build 3hdeng/10kspa:cpu
+#FROM 3hdeng/tensorflow-bazel:cpu
+# -->
+#to build 3hdeng/zake-word2vec:cpu
+FROM 3hdeng/10kspa:cpu
+MAINTAINER 3hdeng
+#====================
+#RUN pip install keras
+#RUN  pip install -U spacy &&  echo "spacy installed"
+#RUN  pip install feedparser && echo "feedparser installed"
+#RUN  pip install beautifulsoup4 && echo "beautifulsoup4 installed"
+
+#ENV PYTHONIOENCODING UTF-8
+
+#RUN python -m  nltk.downloader stopwords && echo "nltk data for stopwords downloaded"
+
+#RUN pip install -U pip
+#RUN pip install appdirs --upgrade
+#RUN pip install -U jupyter
+
+#====== for graphics-related lib, ete3/pyplot/... =============
+#RUN apt-get update && apt-get install -y python-qt4 python-tk
+#RUN pip install pandas ete3 seaborn
+
+#==== install nodejs
+#RUN apt-get update && curl -sL https://deb.nodesource.com/setup_4.x | bash
+#RUN apt-get install -y  nodejs
+
+# install socker.io client
+#RUN pip install -U socketIO-client
+
+# install neo4j
+#RUN curl -sL  https://debian.neo4j.org/neotechnology.gpg.key | sudo apt-key add -
+#RUN echo 'deb http://debian.neo4j.org/repo stable/' | sudo tee /etc/apt/sources.list.d/neo4j.list
+#RUN apt-get update && apt-get -y install neo4j
+
+#RUN pip install -U gensim
+
+#the extra ...
+RUN pip install jieba
+CMD []
