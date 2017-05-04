@@ -8,7 +8,7 @@ from gensim.corpora import WikiCorpus
 def main():
 
     if len(sys.argv) != 2:
-        print("Usage: python3 " + sys.argv[0] + " wiki_data_path")
+        print("Usage: python " + sys.argv[0] + " wiki_data_path")
         exit()
 
     logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)

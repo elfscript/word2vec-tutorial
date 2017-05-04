@@ -1,5 +1,5 @@
 #!/bin/bash
-ver=cpu
+ver=2.7
 if [[ "$#" == "1" ]]; then
   ver=$1
 fi
