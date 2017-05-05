@@ -15,37 +15,45 @@ len(w2v_model.wv.vocab)
 
 
 def main():
-	logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-	model = models.Word2Vec.load('med250.model.bin')
-        v1=model.wv[u'天空'] #has to input unicode u'xxx'
-	#print(type(v1)) <type 'numpy.ndarray'>
-        print(len(v1), v1[0:5], v1[-5:-1])
-        print( u",".join(wv2syn(model.wv, u'天空', 5)) )
-        i=0
-        vocab=model.wv.vocab
+      logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+      model = models.Word2Vec.load('med250.model.bin')
+      v1=model.wv[u'天空'] #has to input unicode u'xxx'
+      #print(type(v1)) <type 'numpy.ndarray'>
+      print(len(v1), v1[0:5], v1[-5:-1])
+      print( u",".join(wv2syns(model.wv, u'天空', 5)) )
+      i=0
+      #xxx model.sort_vocab()
+      vocab=model.wv.vocab
+      destfname="wv2syns.txt"
+      print("write synonyms to %s starting" %(destfname) )      
+      with io.open(destfname, 'w', encoding='utf-8') as f:
         for wd in vocab:
-	    print(wd,vocab[wd].index , unicode(vocab[wd]))
-            i +=1
-            if i >3 :
-               break
+	    #print(wd,vocab[wd].index , unicode(vocab[wd]))
+           x=wd + ":" + u",".join(wv2syns(model.wv, wd, 5, 0.75))
+	   if i%1000==0 :
+             print(i, vocab[wd].index, vocab[wd].count)
+             print(x)
+ 
+           f.write(x + '\n')
+           i +=1
              
                
+      print("write synonyms to %s finished" %(destfname) )
 
+#        x=wv2ant(model.wv, u'天空', 3, -0.2)
+#        print(x)
 
-        x=wv2ant(model.wv, u'天空', 3, -0.2)
-        print(x)
-
-def wv2syn(wv, wd, topn, th=0.65):
+def wv2syns(wv, wd, topn, th=0.65):
    try:
        # vs= wv.most_similar(positive=[wd],topn = topn) 
-       vs=wv.similar_by_word(wd, topn=topn)
-       return [t[0] for t in vs if t[1]>=th]
+       tuples=wv.similar_by_word(wd, topn=topn)
+       return [t[0] for t in tuples if t[1]>=th]
        #how to set threshold to filter out low-similarity words ?
        #say, to chosse only top 3 words haveing similarity > 0.9
  
    except Exception as e:
        #print("Unexpected error:", sys.exc_info()[0])
-       logging.info("wv2syn exception %s", repr(e))
+       logging.info("wv2syns exception %s", repr(e))
        return []
 
 def wv2ant(wv, wd, topn, th=0.65):
