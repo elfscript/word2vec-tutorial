@@ -22,8 +22,9 @@ def main():
         print(len(v1), v1[0:5], v1[-5:-1])
         print( u",".join(wv2syn(model.wv, u'天空', 5)) )
         i=0
-        for wd in model.wv.vocab:
-	    print(wd)
+        vocab=model.wv.vocab
+        for wd in vocab:
+	    print(wd,vocab[wd].index , unicode(vocab[wd]))
             i +=1
             if i >3 :
                break
