@@ -3,11 +3,13 @@
 from gensim.models import word2vec
 from gensim import models
 import logging
+from gensim.models.keyedvectors import KeyedVectors
 
 def main():
 	logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-	model = models.Word2Vec.load('vectors.bin')
-
+	# model = models.Word2Vec.load('vectors.bin')
+        #word_vectors = KeyedVectors.load_word2vec_format('/tmp/vectors.txt', binary=False)  # C text format
+        wv = KeyedVectors.load_word2vec_format('c_vectors.bin', binary=True)  # C binary format
 	print("提供 3 種測試模式")
 	print("輸入一個詞，則去尋找前一百個該詞的相似詞")
 	print("輸入兩個詞，則去計算兩個詞的餘弦相似度")
@@ -20,17 +22,17 @@ def main():
 		try:
 			if len(q_list) == 1:
 				print("相似詞前 100 排序")
-				res = model.most_similar(q_list[0],topn = 100)
+				res = wv.most_similar(q_list[0],topn = 100)
 				for item in res:
 					print(item[0]+","+str(item[1]))
 
 			elif len(q_list) == 2:
 				print("計算 Cosine 相似度")
-				res = model.similarity(q_list[0],q_list[1])
+				res = wv.similarity(q_list[0],q_list[1])
 				print(res)
 			else:
 				print("%s之於%s，如%s之於" % (q_list[0],q_list[2],q_list[1]))
-				res = model.most_similar([q_list[0],q_list[1]], [q_list[2]], topn= 100)
+				res = wv.most_similar([q_list[0],q_list[1]], [q_list[2]], topn= 100)
 				for item in res:
 					print(item[0]+","+str(item[1]))
 			print("----------------------------")
