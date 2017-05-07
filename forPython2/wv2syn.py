@@ -16,7 +16,7 @@ len(w2v_model.wv.vocab)
 
 def main():
       logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
-      model = models.Word2Vec.load('med250.model.bin')
+      model = models.Word2Vec.load('vectors.bin')
       v1=model.wv[u'天空'] #has to input unicode u'xxx'
       #print(type(v1)) <type 'numpy.ndarray'>
       print(len(v1), v1[0:5], v1[-5:-1])
@@ -26,15 +26,17 @@ def main():
       vocab=model.wv.vocab
       destfname="wv2syns.txt"
       print("write synonyms to %s starting" %(destfname) )      
+      x1k=u""
       with io.open(destfname, 'w', encoding='utf-8') as f:
         for wd in vocab:
 	    #print(wd,vocab[wd].index , unicode(vocab[wd]))
-           x=wd + ":" + u",".join(wv2syns(model.wv, wd, 5, 0.75))
-	   if i%1000==0 :
+           x = wd + ":" + u",".join(wv2syns(model.wv, wd, 5, 0.75))
+           x1k = x1k +x
+	   if i%10000==0 :
              print(i, vocab[wd].index, vocab[wd].count)
-             print(x)
- 
-           f.write(x + '\n')
+             logging.info(x) 
+             f.write(x1k + '\n')
+             x1k=u""
            i +=1
              
                

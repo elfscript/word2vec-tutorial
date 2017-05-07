@@ -10,7 +10,7 @@ def main():
     model = word2vec.Word2Vec(sentences, size=250)
 
     #保存模型，供日後使用
-    model.save(u"med250.model.bin")
+    model.save(u"vectors.bin")
 
     #模型讀取方式
     # model = word2vec.Word2Vec.load("your_model.bin")
