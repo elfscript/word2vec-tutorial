@@ -26,17 +26,17 @@ def main():
       vocab=model.wv.vocab
       destfname="wv2syns.txt"
       print("write synonyms to %s starting" %(destfname) )      
-      x1k=u""
+      x1k=[]
       with io.open(destfname, 'w', encoding='utf-8') as f:
         for wd in vocab:
 	    #print(wd,vocab[wd].index , unicode(vocab[wd]))
            x = wd + ":" + u",".join(wv2syns(model.wv, wd, 5, 0.75))
-           x1k = x1k +x
+           x1k.append(x)
 	   if i%10000==0 :
              print(i, vocab[wd].index, vocab[wd].count)
              logging.info(x) 
-             f.write(x1k + '\n')
-             x1k=u""
+             f.write(u'\n'.join(x1k))
+             x1k=[]
            i +=1
              
                
