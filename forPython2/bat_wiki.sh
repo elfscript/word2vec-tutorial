@@ -8,10 +8,11 @@ else
 fi
 
 python wiki_to_txt.py $wiki_bz2_fname
-#opencc -i  wiki_texts.txt -o wiki_zh_tw.txt
+opencc -i  wiki_texts.txt -o wiki_zh_tw.txt
 
+# from wiki_zh_tw.txt to wiki_seg.txt
 python segment.py
-
+# from wiki_seg.txt to vectors.bin
 python train.py
 
 
