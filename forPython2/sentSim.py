@@ -26,17 +26,21 @@ def main():
       logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
       model = models.Word2Vec.load('vectors.bin')
       _wv=model.wv
-      sents = zhPar2Sents('sample1.txt')
+      sents = zhPar2Sents('sample2.txt')
       sents=[s for s in sents if len(s.strip()) > 2 ]
       s0=sents[0]
       L=len(sents)
+      print("number of effective sentences", L)
       #for s1, s2 in zip(sents[0:L-1], sents[1:L]) :
       #    print(sentSim(s1,s2)) 
       x=(0, 0.0)
-      for i, s in  enumerate(sents[1:L]) :   
+      for i, s in  enumerate(sents[0:L]) :  
+        print(s) 
+        if i==0  : continue
         tmp=sentSim(s0,s)
+        print("similarity:", tmp)
         if tmp > x[1] :
-             x=(i+1,tmp)
+             x=(i,tmp)
       print(x)
       print(s0)
       print(sents[x[0]])
@@ -76,11 +80,16 @@ def sentSim(s1,s2, th=0.65):
       ns2=[wd   for wd, postag in sent2words(s2)    if postag=='ns' ]
       n2=[wd   for wd, postag in sent2words(s2)    if postag=='n' ]
       v2=[wd   for wd, postag in sent2words(s2)    if postag=='v' ]
+      print(u",".join(n1))
+      print(u",".join(n2))
+#      print(u",".join(v1))
+#      print(u",".join(v2))
+#
       x=wdlistSim(ns1, ns2)
       x += wdlistSim(n1, n2)
       x += wdlistSim(v1, v2)
 
-      return x/1.732
+      return x/3
  
    except Exception as e:
       logging.info(sys._getframe().f_code.co_name +" exception %s", repr(e))
